@@ -23,7 +23,7 @@ const prisma = new PrismaClient()
 //     return users
 // }
 
-const userData:(i: number) => Prisma.UserCreateInput = (i) => {
+const userData: (i: number) => Prisma.UserCreateInput = (i) => {
     return (
         {
             name: `Alice${i}`,
@@ -78,34 +78,14 @@ const userData:(i: number) => Prisma.UserCreateInput = (i) => {
 // }
 
 async function main() {
-    console.log(`Start seeding ...`)
-    // const createMany = await prisma.user.crete({
-    //     data: userData
-    // })
-    //const users:Prisma.UserCreateInput[] = userData(1000000)
-//     const insertQuery = `
-//     WITH users AS (
-//       INSERT INTO users (name, email)
-//       VALUES ${users.map(u => `('${u.name}', '${u.email}')`).join(',\n')}
-//       RETURNING id
-//     ),
-//     posts AS (
-//       INSERT INTO posts (title, content, published, author_id)
-//       SELECT p.title, p.content, p.published, u.id
-//       FROM UNNEST(ARRAY[${users.map(u => u.posts?.create?.map(p => `('${p.title}', '${p.content}', ${p.published})`).join(','))}]) p
-//       JOIN users u ON u.email = '${u.email}'
-//       RETURNING id
-//     )
-//     SELECT * FROM users;
-//   `;
-//   await prisma.$executeRaw(insertQuery);
-    for (let i = 1; i <= 100; i++) {//for (const u of userData) {
+    console.log(`Start seeding ...`);
+    for (let i = 1; i <= 1000000; i++) {
         const user = await prisma.user.create({
             data: userData(i),
         })
-        //if (i % 50000 == 0) {
+        if (i % 5000 == 0) {
             console.log(`Created user with id: ${user.id}`)
-        //}
+        }
     }
     console.log(`Seeding finished.`)
 }

@@ -1,15 +1,15 @@
 import React from "react";
 import type { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
-import PaginationSection from "../components/PaginationSection";
-import Post, { PostProps } from "../components/Post";
-import prisma from '../lib/prisma'
+import Layout from "../../components/Layout";
+import Post, { PostProps } from "../../components/Post";
+import PaginationSection from "../../components/PaginationSection";
+import prisma from '../../lib/prisma'
 
 const PageSize: number = 10;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const feed = await prisma.post.findMany({
-        skip: 0,
+        skip: (Number(params?.page_num) - 1) * PageSize,
         take: PageSize,
         where: {
             published: true,
@@ -24,12 +24,13 @@ export const getServerSideProps: GetServerSideProps = async () => {
     });
     const posts_count = await prisma.post.count();
     return {
-        props: { feed: feed, posts_count: posts_count },
+        props: { feed: feed, page_num: Number(params?.page_num), posts_count: posts_count },
     };
 };
 
 type Props = {
     feed: PostProps[];
+    page_num: number;
     posts_count: number;
 };
 
@@ -45,7 +46,7 @@ const Blog: React.FC<Props> = (props) => {
                         </div>
                     ))}
                 </main>
-                <PaginationSection currentPage={1} hintCount={4} pageCount={props.posts_count / PageSize}></PaginationSection>
+                <PaginationSection currentPage={props.page_num} hintCount={4} pageCount={Math.ceil(props.posts_count / PageSize)}></PaginationSection>
             </div>
             <style jsx>{`
         .post {
@@ -61,7 +62,7 @@ const Blog: React.FC<Props> = (props) => {
           margin-top: 2rem;
         }
       `}</style>
-        </Layout>
+        </Layout >
     );
 };
 
