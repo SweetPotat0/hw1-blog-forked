@@ -79,7 +79,7 @@ const userData: (i: number) => Prisma.UserCreateInput = (i) => {
 
 async function main() {
     console.log(`Start seeding ...`);
-    for (let i = 1; i <= 1000000; i++) {
+    for (let i = 1; i <= 100; i++) {
         const user = await prisma.user.create({
             data: userData(i),
         })
