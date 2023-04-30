@@ -1,3 +1,6 @@
+## Notes
+1. This repository is archived and not in use anymore. Its not the submission. If you got here by mistake, this is the link to the submission: https://github.com/SweetPotat0/hw1-blog
+
 ## Submission: 
 1. Submission is in pairs, but it's better for practice if you start alone.
 2. Coding: 70%, Questions: 30%.
